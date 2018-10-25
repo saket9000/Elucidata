@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Elucidata</title>
+</head>
+<body>
+	<br><br>
+<form action="/elucidata/ques3" method="POST" enctype="multipart/form-data">
+	{% csrf_token %}
+	Upload xls file <input type="file" name="file" />
+	<br><br><br>
+	<input type="submit" value="Submit" />
+</form>
+</body>
+</html>
