@@ -7,8 +7,6 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from openpyxl import load_workbook
 
-
-
 from elucidata import models
 
 # Create your views here.
@@ -94,10 +92,26 @@ def ques3(request):
 				my_file.media = request.FILES["file"]
 			excel_file = my_file.media
 			df = pd.read_excel(excel_file)
-			df1 = df.groupby('Retention Time Roundoff (in mins)').count()
+			df1 = df.groupby('Retention Time Roundoff (in mins)').mean().count()
 			print(df1)
 		except Exception as e:
 			print (e)
 	return render(
 		request, "ques3.html", context_dict
+	)
+
+def ques4(request):
+	context_dict = {}
+	if request.method == 'POST':
+		try:
+			my_file = models.File()
+			if "file" in request.FILES:
+				my_file.media = request.FILES["file"]
+			csv_file = my_file.media
+			df = pd.read_csv(csv_file)
+			print(pd.concat([df.ix[:,i:i+3].mean(axis=1) for i in range(2,len(df.columns),3)], axis=1))
+		except Exception as e:
+			print(e)
+	return render(
+		request, "ques4.html", context_dict
 	)
